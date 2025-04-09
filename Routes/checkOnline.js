@@ -15,7 +15,7 @@ const io = socketIo(server, {
 });
 
 // Start the server
-server.listen(process.env.SCOCKET_PORT_ONLINE_STATUS, () => {
+server.listen(process.env.SCOCKET_PORT_ONLINE_STATUS || process.env.DEFAULT_PORT, () => {
     console.log('WebSocket server is running on', process.env.SCOCKET_PORT_ONLINE_STATUS);
 });
 

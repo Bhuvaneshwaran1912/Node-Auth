@@ -8,14 +8,14 @@ const connection = require('../connection');
 
 const io = socketIo(server, {
     cors: {
-        origin: "http://localhost:4200", // Angular app origin
+        origin: '*', // Angular app origin
         methods: ["GET", "POST"],
         credentials: true,
     }
 });
 
 // Start the server
-server.listen(process.env.SCOCKET_PORT_CHAT, () => {
+server.listen(process.env.SCOCKET_PORT_CHAT || process.env.DEFAULT_PORT, () => {
     console.log('WebSocket server is running on', process.env.SCOCKET_PORT_CHAT);
 });
 
