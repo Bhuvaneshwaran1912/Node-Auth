@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
 
         // Update user's status to online in the database
         connection.query(
-            'INSERT INTO userStatus (USR_ID, USR_ONLINE) VALUES (?, TRUE) ON DUPLICATE KEY UPDATE USR_ONLINE = TRUE, USR_LAST_SEEN = CURRENT_TIMESTAMP',
+            'INSERT INTO userstatus (USR_ID, USR_ONLINE) VALUES (?, TRUE) ON DUPLICATE KEY UPDATE USR_ONLINE = TRUE, USR_LAST_SEEN = CURRENT_TIMESTAMP',
             [userId],
             (err, results) => {
                 if (err) {
@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
                     FROM 
                         UserManagement u
                     LEFT JOIN 
-                        userStatus s ON u.ID = s.USR_ID;`
+                        userstatus s ON u.ID = s.USR_ID;`
                     connection.query(queryy, (err, results) => {
                         if (!err) {
                             if (results.length > 0) {
@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
             if (connectedUsers[userId] === socket.id) {
                 // Update user's status to offline in the database
                 connection.query(
-                    'UPDATE userStatus SET USR_ONLINE = FALSE, USR_LAST_SEEN = CURRENT_TIMESTAMP WHERE USR_ID = ?',
+                    'UPDATE userstatus SET USR_ONLINE = FALSE, USR_LAST_SEEN = CURRENT_TIMESTAMP WHERE USR_ID = ?',
                     [userId],
                     (err, results) => {
                         if (err) {
@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
                             FROM 
                                 UserManagement u
                             LEFT JOIN 
-                                userStatus s ON u.ID = s.USR_ID;`
+                                userstatus s ON u.ID = s.USR_ID;`
                             connection.query(queryy, (err, results) => {
                                 if (!err) {
                                     var obj = {

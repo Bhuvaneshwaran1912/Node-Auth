@@ -11,7 +11,7 @@ require('dotenv').config()
 // const e = require('express');
 
 router.get('/getUser', authenticateToken, (req, res) => {
-    var query = "select * from UserManagement";
+    var query = "select * from usermanagement";
     connection.query(query, (err, results) => {
         if (!err) {
             var obj = {
@@ -34,12 +34,12 @@ router.get('/getUser', authenticateToken, (req, res) => {
 router.post('/signUp', (req, res) => {
     var obj = {}
     let user = req.body;
-    query = `select * from UserManagement where USR_EMAIL = '${user.USR_EMAIL}'`;
+    query = `select * from usermanagement where USR_EMAIL = '${user.USR_EMAIL}'`;
     connection.query(query, (err, results) => {
         obj.data = results;
         if (!err) {
             if (results.length <= 0) {
-                query = "insert into UserManagement(USR_NAME, USR_EMAIL, USR_PSWD, USR_PHNO, USR_GENDER) values(?,?,?,?,?)";
+                query = "insert into usermanagement(USR_NAME, USR_EMAIL, USR_PSWD, USR_PHNO, USR_GENDER) values(?,?,?,?,?)";
                 connection.query(query, [user.USR_NAME, user.USR_EMAIL, user.USR_PSWD, user.USR_PHNO,
                 user.USR_GENDER], (err, results) => {
                     if (!err) {
@@ -64,7 +64,7 @@ router.post('/signUp', (req, res) => {
 router.post('/signIn', (req, res) => {
     var obj = {}
     const user = req.body;
-    query = `select * from UserManagement where USR_EMAIL = '${user.USR_EMAIL}'`;
+    query = `select * from usermanagement where USR_EMAIL = '${user.USR_EMAIL}'`;
     connection.query(query, (err, results) => {
 
         if (!err) {
@@ -100,7 +100,7 @@ router.post('/signIn', (req, res) => {
 router.post('/userUpdate', (req, res) => {
     var user = req.body;
     var obj = {}
-    var query = "update UserManagement set USR_NAME=?, USR_EMAIL=?, USR_PHNO=?, USR_GENDER=? where id=?";
+    var query = "update usermanagement set USR_NAME=?, USR_EMAIL=?, USR_PHNO=?, USR_GENDER=? where id=?";
     connection.query(query, [user.USR_NAME, user.USR_EMAIL, user.USR_PHNO,
     user.USR_GENDER, user.id], (err, results) => {
         if (!err) {
@@ -108,7 +108,7 @@ router.post('/userUpdate', (req, res) => {
                 obj.code = 300; obj.message = 'User ID does not exists !';
                 return res.status(200).json(obj);
             } else {
-                var query = "select * from UserManagement";
+                var query = "select * from usermanagement";
                 connection.query(query, (err, getResult) => {
                     if (getResult.length > 0) {
                         obj.code = 200; obj.message = 'User Updated Successfully !'; obj.data = getResult;
@@ -125,14 +125,14 @@ router.post('/userUpdate', (req, res) => {
 router.post('/userDelete', (req, res) => {
     var user = req.body;
     var obj = {}
-    var query = "delete from UserManagement where id=?";
+    var query = "delete from usermanagement where id=?";
     connection.query(query, [user.id], (err, results) => {
         if (!err) {
             if (results.affectedRows == 0) {
                 obj.code = 300; obj.message = 'User ID does not exists !';
                 return res.status(200).json(obj);
             } else {
-                var query = "select * from UserManagement";
+                var query = "select * from usermanagement";
                 connection.query(query, (err, getResult) => {
                     if (getResult.length > 0) {
                         obj.code = 200; obj.message = 'User Deleted Successfully !'; obj.data = getResult;
@@ -157,7 +157,7 @@ var transporter = nodemailer.createTransport({
 router.post("/forgotPassword", (req, res) => {
     const user = req.body;
     var obj = {}
-    query = "select USR_EMAIL,USR_PSWD from UserManagement where USR_EMAIL=?";
+    query = "select USR_EMAIL,USR_PSWD from usermanagement where USR_EMAIL=?";
     connection.query(query, [user.USR_EMAIL], (err, results) => {
         console.log("err", err);
         if (!err) {

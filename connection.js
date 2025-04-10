@@ -7,6 +7,7 @@ var connection = mysql.createConnection({
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    connectTimeout: 100000 // Set to 10 seconds (10000ms)
 })
 
 connection.connect((err) => {
